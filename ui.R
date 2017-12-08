@@ -45,7 +45,8 @@ shinyUI(fluidPage(
       selectInput("ifRepair", "IfRepair : ", choices=ifRepair),
       sliderInput("powerPS", "powerPS : ", min = powerPS$min, max = powerPS$max, value = powerPS$max, step = 1, sep='')
     ),
-    mainPanel( textOutput("result_text") )
+    list(mainPanel( span(textOutput("result_text") ,style="font-size: 30px;font-family: impact;")),
+         mainPanel = (imageOutput("result_plot") ))
   )
   
 ))

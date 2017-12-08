@@ -22,7 +22,56 @@ function(input, output) {
                  'notRepairedDamage' = input$ifRepair ) )
   })
   
-  #==== Output : Prediction ====   
+  #==== Output : Prediction ====
+  
+  output$result_plot <- renderImage({
+    
+    if (input$vehicleType == "bus"){
+      return( list(
+        src = "www/schoolbus.jpg",
+        height = 400, width = 600,
+        alt = "bus"
+      ))}
+    
+    else if (input$vehicleType == "cabrio"){
+      return( list(
+        src = "www/cabrio.jpg",
+        height = 400, width = 600,
+        alt = "cabrio"
+      ))}
+    else if (input$vehicleType == "kombi"){
+      return( list(
+        src = "www/kombi.jpg",
+        height = 400, width = 600,
+        alt = "kombi"
+      ))}
+    else if (input$vehicleType == "kleinwagen"){
+      return( list(
+        src = "www/kleinwagen.jpg",
+        height = 400, width = 600,
+        alt = "kleinwagen"
+      ))}
+    else if (input$vehicleType == "suv"){
+      return( list(
+        src = "www/suv.jpg",
+        height = 400, width = 600,
+        alt = "suv"
+      ))}
+    else if (input$vehicleType == "coupe"){
+      return( list(
+        src = "www/coupe.jpg",
+        height = 400, width = 600,
+        alt = "coupe"
+      ))}
+    else if (input$vehicleType == "limousine"){
+      return( list(
+        src = "www/limousine.jpg",
+        height = 400, width = 600,
+        alt = "limousine"
+      ))}
+    
+  }, deleteFile = FALSE)
+  
   output$result_text <- renderText({
     
     #---- Connect to Azure ML workspace ----  
@@ -56,9 +105,13 @@ function(input, output) {
                 headerfunction = hdr$update,
                 verbose = TRUE
     )
-    print("Result:")
+
     result = h$value()
     print(fromJSON(result)$Results$output1[[1]]$PredictedPrice)
+    result = h$value()
+    result = fromJSON(result)$Results$output1[[1]]$PredictedPrice
+    #result = toString(round(as.double(result), digit = 2))
+    return(sprintf("Predicted Price:  $%s", result))
     #---- Get Result  ----
     #result1 = fromJSON( h$value() )$Results$output1[[1]] #<- Add Parse Result Here   ###### Check 5 ######
      }, )
